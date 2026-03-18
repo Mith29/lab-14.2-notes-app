@@ -39,8 +39,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     // This needs an authorization check
-    const note = await Note.findByIdAndUpdate( req.params.id, req.user._id ,req.body,{ new: true }
-);;
+    const note = await Note.findByIdAndUpdate( req.params.id, req.user._id ,req.body,{ new: true });
     if (!note) {
       return res.status(404).json({ message: 'No note found with this id!' });
     }
@@ -61,6 +60,18 @@ router.delete('/:id', async (req, res) => {
     res.json({ message: 'Note deleted!' });
   } catch (err) {
     res.status(403).json({ message: 'Unauthorized access!' });
+  }
+});
+
+// ----OPTIONAL-------
+//get single note---GET /api/notes/:id
+router.get('/:id', async (req, res) => {
+
+  try {
+    const notes = await Note.find({_id: req.params.id});
+    res.json(notes);
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
  
