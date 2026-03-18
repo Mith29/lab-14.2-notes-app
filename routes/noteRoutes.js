@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
   // This currently finds all notes in the database.
   // It should only find notes owned by the logged in user.
   try {
-    const notes = await Note.find({});
+    const notes = await Note.find({user:req.user._id});
     res.json(notes);
   } catch (err) {
     res.status(500).json(err);
@@ -27,6 +27,7 @@ router.post('/', async (req, res) => {
     const note = await Note.create({
       ...req.body,
       // The user ID needs to be added here
+      user: req.user._id
     });
     res.status(201).json(note);
   } catch (err) {
@@ -38,7 +39,8 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     // This needs an authorization check
-    const note = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const note = await Note.findByIdAndUpdate( req.params.id, req.user._id ,req.body,{ new: true }
+);;
     if (!note) {
       return res.status(404).json({ message: 'No note found with this id!' });
     }
@@ -58,7 +60,7 @@ router.delete('/:id', async (req, res) => {
     }
     res.json({ message: 'Note deleted!' });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(403).json({ message: 'Unauthorized access!' });
   }
 });
  
