@@ -10,7 +10,7 @@ A secure backend service built with Node.js, Express, and MongoDB that supports:
 ---
 
 ## Project Structure
-
+````
 
 project-root/
 │
@@ -34,7 +34,7 @@ project-root/
 ├── package.json
 └── server.js
 
-
+````
 ---
 
 ## Installation & Setup
